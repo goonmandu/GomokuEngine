@@ -196,13 +196,13 @@ int minimax(Omok omok, int depth) {
     return 2;  // Something bad happened
 }
 
-std::vector<OmokMove> evaluate_moves(Omok omok) {
+std::vector<OmokMove> evaluate_moves(Omok omok, int radius, int depth) {
     std::cout << "Thinking..." << std::endl;
-    auto valid_moves = next_moves(omok, 1);
+    auto valid_moves = next_moves(omok, radius);
     int next = next_player(omok);
     int best_outcome = (next == MAX) ? INT_MIN : INT_MAX;
     for (int i = 0; i < valid_moves.size(); ++i) {
-        valid_moves[i].eval = minimax(result(omok, valid_moves[i]), 3);
+        valid_moves[i].eval = minimax(result(omok, valid_moves[i]), depth);
         if (next == MAX && valid_moves[i].eval > best_outcome) {
             best_outcome = valid_moves[i].eval;
         } else if (next == MIN && valid_moves[i].eval < best_outcome) {

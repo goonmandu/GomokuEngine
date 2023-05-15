@@ -10,13 +10,9 @@ int main() {
     omok.place(MIN, 7, 4);
     omok.place(MAX, 5, 6);
     omok.place(MIN, 8, 9);
-    omok.place(MAX, 6, 6);
-    omok.place(MIN, 9, 10);
-    omok.place(MAX, 8, 6);
 
     omok.print_board();
 
-    std::vector<OmokMove> evals = evaluate_moves(omok);
+    std::vector<OmokMove> evals = evaluate_moves(omok, 1, 4);
     println_vector(evals, "\n");
-
 }
