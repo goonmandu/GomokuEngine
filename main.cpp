@@ -13,17 +13,19 @@ int main(int argc, char **argv) {
     omok.place(MAX, 5, 6);
     omok.place(MIN, 8, 9);
 
-    omok.print_board();
+    // omok.print_board();
 
     int radius = 1, depth = 3;
+    /*
     std::cout << "Enter the search radius: ";
     std::cin >> radius;
 
     std::cout << "Enter the recursion depth: ";
     std::cin >> depth;
+    **/
 
     std::vector<OmokMove> evals = evaluate_moves(omok, radius, depth);
-    println_vector(evals, "\n");
+    //println_vector(evals, "\n");
     extern long long moves_generated;
     std::cout << moves_generated << std::endl;
 }
