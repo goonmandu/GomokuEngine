@@ -4,6 +4,11 @@
 
 #include <vector>
 
+/* With no alpha-beta pruning (unmodified minimax):
+ * int  representation does 76.7k nodes/sec
+ * bool representation does 94.9k nodes/sec (+23.7% improvement)
+ **/
+
 class Omok {
     private:
         std::vector<std::vector<int>> board;
