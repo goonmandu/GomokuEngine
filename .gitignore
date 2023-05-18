@@ -19,3 +19,6 @@ a.out
 
 # VSCode config directory
 /.vscode
+
+# Unignore LICENSE
+!LICENSE
