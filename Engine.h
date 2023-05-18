@@ -1,5 +1,3 @@
-// CONTINUE AT LINE 282: next_moves_bitboard
-
 #include <iostream>
 #include "Omok.h"
 #include "OmokMove.h"
@@ -297,12 +295,6 @@ std::vector<OmokMove> next_moves_bitboard(Omok omok, int radius) {
             }
         }
     }
-
-    /*
-    for (auto rc : occupied_cells) {
-        std::cout << rc[0] << "," << rc[1] << std::endl;
-    }
-     */
 
     if (occupied_cells.empty()) {
         ret.push_back(OmokMove(next, 7, 7));
