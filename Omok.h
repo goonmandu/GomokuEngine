@@ -4,6 +4,7 @@
  *
  * With no alpha-beta pruning (unmodified minimax)
  * Environment: Apple M1, no power saving, 16GB RAM
+ * Compiler arguments: -std=c++11 -Ofast
  *
  * int  representation does 124k nodes/sec (602927 nodes / 4.85s)
  * bool representation does 154k nodes/sec (601964 nodes / 3.90s)
