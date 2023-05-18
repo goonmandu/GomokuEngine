@@ -28,3 +28,11 @@ template <typename T>
 T min(T t1, T t2) {
     return (t1 > t2) ? t2 : t1;
 }
+
+std::vector<std::string> parse_clargs(int argc, char **argv) {
+    std::vector<std::string> ret;
+    for (int i = 0; i < argc; ++i) {
+        ret.emplace_back(std::string(argv[i]));
+    }
+    return ret;
+}
