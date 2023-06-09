@@ -1,10 +1,10 @@
+#pragma once
+
 #include <iostream>
 #include "Omok.h"
 #include "OmokMove.h"
-#include "consts.h"
-#include "utils.h"
 
-static long long moves_generated = 0;
+extern long long moves_generated;
 
 // 3-state board functions
 int next_player(Omok omok);

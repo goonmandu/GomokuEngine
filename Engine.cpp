@@ -1,6 +1,10 @@
+#include <cstdint>
+#include <limits>
 #include "Engine.h"
+#include "consts.h"
+#include "utils.h"
 
-static long long moves_generated = 0;
+long long moves_generated = 0;
 
 int next_player(Omok omok) {
     int maxcount = 0;
@@ -176,18 +180,16 @@ int minimax(Omok omok, int depth) {
     }
 
     if (next == MAX) {
-        int value = INT_MIN;
+        auto value = std::numeric_limits<int>::min();
         for (auto move : next_moves(omok, 1)) {
-            // std::cout << depth << ":" << "(" << move.row << "," << move.col << ")\n";
             value = max(value, minimax(result(omok, move), depth - 1));
         }
         return value;
     }
 
     if (next == MIN) {
-        int value = INT_MAX;
+        auto value = std::numeric_limits<int>::max();
         for (auto move : next_moves(omok, 1)) {
-            // std::cout << depth << ":" << "(" << move.row << "," << move.col << ")\n";
             value = min(value, minimax(result(omok, move), depth - 1));
         }
         return value;
@@ -341,10 +343,99 @@ std::vector<OmokMove> next_moves_bitboard(Omok omok, int radius) {
 
 double evaluate_bitboard(Omok omok) {
     double evaluation = 0;
+    auto wb = omok.get_bitboard(WHITE);
+    auto bb = omok.get_bitboard(BLACK);
+    int w3 = 0, b3 = 0;
+    // WHITE = 1, BLACK = -1, EMPTY = 0
+    std::vector<std::vector<std::int8_t>> complete_board = {};
+    for (int i = 0; i < DIM; ++i) {
+        complete_board.push_back({});
+        for (int k = 0; k < DIM; ++k) {
+            if (wb[i][k]) {
+                complete_board[i].push_back(1);
+            } else if (bb[i][k]) {
+                complete_board[i].push_back(-1);
+            } else {
+                complete_board[i].push_back(0);
+            }
+        }
+    }
 
-    // Static analysis algorithm goes here.
-    // AKA black magic
+    // Check horizontals for open threes
+    for (auto row : complete_board) {
+        for (int k = 0; k < DIM - 4; ++k) {
+            if (row[k] == 0 &&
+                    row[k+1] != 0 &&
+                    row[k+1] == row[k+2] &&
+                    row[k+2] == row[k+3] &&
+                    row[k+4] == 0) {
+                if (row[k+1] == 1) {
+                    w3++;
+                } else {
+                    b3++;
+                }
+            }
+        }
+    }
 
+    // Check verticals for open threes
+    for (int i = 0; i < DIM; ++i) {
+        for (int k = 0; k < DIM - 4; ++k) {
+            if (complete_board[k][i] == 0 &&
+                    complete_board[k+1][i] != 0 && 
+                    complete_board[k+1][i] == complete_board[k+2][i] && 
+                    complete_board[k+2][i] == complete_board[k+3][i] &&
+                    complete_board[k+4][i] == 0) {
+                if (complete_board[k+1][i] == 1) {
+                    w3++;
+                } else {
+                    b3++;
+                }
+            }
+        }
+    }
+
+    // Scan topleft-botright for open threes
+    for (int i = 0; i < DIM - 4; ++i) {
+        for (int k = 0; k < DIM - 4; ++k) {
+            if (complete_board[i][k] == 0 &&
+                    complete_board[i+1][k+1] != 0 &&
+                    complete_board[i+1][k+1] == complete_board[i+2][k+2] &&
+                    complete_board[i+3][k+3] && complete_board[i+4][k+4] &&
+                    complete_board[i+4][k+4] == 0) {
+                if (complete_board[i+1][k+1] == 1) {
+                    w3++;
+                } else {
+                    b3++;
+                }
+            }
+        }
+    }
+
+    // Scan topright-botleft for open threes
+    for (int i = 4; i < DIM; ++i) {
+        for (int k = 0; k < DIM - 4; ++k) {
+            if (complete_board[i][k] == 0 &&
+                    complete_board[i-1][k+1] != 0 &&
+                    complete_board[i-1][k+1] == complete_board[i-2][k+2] &&
+                    complete_board[i-3][k+3] && complete_board[i-4][k+4] &&
+                    complete_board[i-4][k+4] == 0) {
+                if (complete_board[i-1][k+1] == 1) {
+                    w3++;
+                } else {
+                    b3++;
+                }
+            }
+        }
+    }
+
+    if (w3 >= 2 && b3 >= 2) {
+        return 0;  // WIP PLACEHOLDER!
+    } else if (w3 >= 2) {
+        return (double) INT_MAX;
+    } else if (b3 >= 2) {
+        return (double) INT_MIN;
+    }
     return evaluation;
 }
 

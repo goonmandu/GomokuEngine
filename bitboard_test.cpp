@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Engine.h"
-#include "util.h"
 
 int main() {
     Omok bitb = Omok(1);
@@ -29,6 +28,5 @@ int main() {
     **/
     auto evals = evaluate_moves_bitboard(bitb, radius, depth);
     // println_vector(evals, "\n");
-    extern long long moves_generated;
     std::cout << moves_generated << std::endl;
 }
